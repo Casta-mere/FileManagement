@@ -12,8 +12,8 @@
 | dir manipulate  | rmdir    | &check; |
 | file manipulate | touch    | &check; |
 | file manipulate | rm       | &check; |
-| file manipulate | mv       | &cross; |
-| file manipulate | cp       | &cross; |
+| file manipulate | mv       | &check; |
+| file manipulate | cp       | &check; |
 | file manipulate | cat      | &cross; |
 | file manipulate | vi       | &cross; |
 | file manipulate | echo     | &cross; |

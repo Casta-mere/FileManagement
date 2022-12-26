@@ -130,6 +130,13 @@ class MyDirectory:
         os.rename(oldpath,newpath)
         os.rename(oldpermissionpath,newpermissionpath)
 
+    def cp(self,username,old,new):
+        if(old not in self.filesname):
+            return "No such file or directory"
+        if(new in self.filesname):
+            return "File exists"
+        self.touch(username,new)
+
 
 
 class MyFile:

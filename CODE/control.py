@@ -98,6 +98,14 @@ class Control:
                         print(result)
                 except:
                     print("Error!")
+            elif cmd[0] == "cp":
+                try:
+                    result = self.d.cp(self.username, cmd[1], cmd[2])
+                    if (result is not None):
+                        print(result)
+                except:
+                    print("Error!")
+                    
             elif cmd[0] == "logout":
                 self.login()
             elif cmd[0] == "":
