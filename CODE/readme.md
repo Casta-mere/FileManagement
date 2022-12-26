@@ -16,7 +16,7 @@
 | file manipulate | mv       | &check; |
 | file manipulate | cp       | &check; |
 | file manipulate | cat      | &check; |
-| file manipulate | vi       | &cross; |
+| file manipulate | vi       | &check; |
 | file manipulate | echo     | &check; |
 | file manipulate | find     | &check; |
 | file manipulate | chmod    | &check; |
