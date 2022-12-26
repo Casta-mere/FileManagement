@@ -163,6 +163,14 @@ class MyDirectory:
         self.touch(username,filename)
         self.files[self.get_filename().index(filename)].echo(content)
 
+    def find(self,filename):
+        if(filename in self.filesname):
+            return self.pathname+'/'+filename
+        for i in self.subdir:
+            if(i.find(filename) != None):
+                return i.find(filename)
+        return None
+
 class MyFile:
     def __init__(self, path, parent=None, author=None):
         self.path = path

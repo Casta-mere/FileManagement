@@ -131,6 +131,13 @@ class Control:
                         print(msg)
                     except:
                         print("Error!")
+            elif cmd[0] == "find":
+                try:
+                    result = self.d.find(cmd[1])
+                    if (result is not None):
+                        print(result)
+                except:
+                    print("Error!")
             elif cmd[0] == "logout":
                 self.login()
             elif cmd[0] == "":
