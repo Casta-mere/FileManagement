@@ -72,16 +72,25 @@ class Control:
                     print(f"Dir {cmd[1]} not exist")
             elif cmd[0] == "chmod":
                 try:
-                    temp=self.d.chmod(self.username, cmd[1], cmd[2])
+                    temp = self.d.chmod(self.username, cmd[1], cmd[2])
                     if temp is not None:
                         print(temp)
                 except:
                     print("Command not complete")
             elif cmd[0] == "touch":
                 try:
-                    self.d.touch(self.username,cmd[1])
+                    result = self.d.touch(self.username, cmd[1])
+                    if (result is not None):
+                        print(result)
                 except:
-                    print("Invalid file name!")
+                    print("Error!")
+            elif cmd[0] == "rm":
+                try:
+                    result = self.d.rm(self.username, cmd[1])
+                    if (result is not None):
+                        print(result)
+                except:
+                    print("Error!")
             elif cmd[0] == "logout":
                 self.login()
             elif cmd[0] == "":

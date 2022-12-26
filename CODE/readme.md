@@ -7,11 +7,11 @@
 | basic           | exit     | &check; |
 | basic           | clear    | &check; |
 | basic           | login    | &check; |
-| basic           | logout   | &cross; |
+| basic           | logout   | &check; |
 | dir manipulate  | mkdir    | &check; |
 | dir manipulate  | rmdir    | &check; |
-| file manipulate | touch    | &cross; |
-| file manipulate | rm       | &cross; |
+| file manipulate | touch    | &check; |
+| file manipulate | rm       | &check; |
 | file manipulate | mv       | &cross; |
 | file manipulate | cp       | &cross; |
 | file manipulate | cat      | &cross; |

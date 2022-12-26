@@ -78,6 +78,25 @@ class MyDirectory:
         os.open(self.path+'/'+filename, os.O_CREAT)
         self.files.append(MyFile(self.path+'/'+filename, self, username))
 
+    def rm(self, username, filename):
+        if(filename not in self.filesname):
+            return "No such file or directory"
+        author, p1, p2 = self.files[self.get_filename().index(
+            filename)].get_p()
+        p1 = int(p1)
+        p1 = p1 & 2
+        p1 = p1 and (username == author)
+        p2 = int(p2)
+        p2 = p2 & 2
+        p2 = p2 and (username != author)
+
+        if(username != "root" and not p1 and not p2):
+            return "Permission denied"
+
+        self.files[self.get_filename().index(filename)].rm()
+        self.files.remove(self.files[self.get_filename().index(filename)])
+        self.filesname.remove(filename)
+
 
 class MyFile:
     def __init__(self, path, parent=None, author=None):
