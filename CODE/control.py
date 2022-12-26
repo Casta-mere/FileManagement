@@ -77,6 +77,11 @@ class Control:
                         print(temp)
                 except:
                     print("Command not complete")
+            elif cmd[0] == "touch":
+                try:
+                    self.d.touch(self.username,cmd[1])
+                except:
+                    print("Invalid file name!")
             elif cmd[0] == "":
                 pass
             else:

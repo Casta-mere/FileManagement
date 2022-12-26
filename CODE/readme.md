@@ -18,17 +18,19 @@
 | file manipulate | vi       | &cross; |
 | file manipulate | echo     | &cross; |
 | file manipulate | find     | &cross; |
+| file manipulate | chmod    | &check; |
+
 
 
 ## permission
 
-| code | binary | read    | write   | execute |
-| :---: | :-----: | :------: | :------: | :------: |
-| 0    | 000    | &cross; | &cross; | &cross; |
-| 1    | 001    | &cross; | &cross; | &check; |
-| 2    | 010    | &cross; | &check; | &cross; |
-| 3    | 011    | &cross; | &check; | &check; |
-| 4    | 100    | &check; | &cross; | &cross; |
-| 5    | 101    | &check; | &cross; | &check; |
-| 6    | 110    | &check; | &check; | &cross; |
-| 7    | 111    | &check; | &check; | &check; |
+| code  | binary |  read   |  write  | execute |
+| :---: | :----: | :-----: | :-----: | :-----: |
+|   0   |  000   | &cross; | &cross; | &cross; |
+|   1   |  001   | &cross; | &cross; | &check; |
+|   2   |  010   | &cross; | &check; | &cross; |
+|   3   |  011   | &cross; | &check; | &check; |
+|   4   |  100   | &check; | &cross; | &cross; |
+|   5   |  101   | &check; | &cross; | &check; |
+|   6   |  110   | &check; | &check; | &cross; |
+|   7   |  111   | &check; | &check; | &check; |

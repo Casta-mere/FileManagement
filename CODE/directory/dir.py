@@ -65,19 +65,30 @@ class MyDirectory:
         return self.pathname
 
     def chmod(self, username, filename, p):
-            if(filename not  in self.filesname):
-                return "No such file or directory"
-            if(username!="root" and username != self.files[self.get_filename().index(filename)].author):
-                return "Permission denied"
-            self.files[self.get_filename().index(filename)].chmod(p)
+        if(filename not in self.filesname):
+            return "No such file or directory"
+        if(username != "root" and username != self.files[self.get_filename().index(filename)].author):
+            return "Permission denied"
+        self.files[self.get_filename().index(filename)].chmod(p)
+
+    def touch(self, username, filename):
+        if(filename in self.filesname):
+            return "File exists"
+        self.filesname.append(filename)
+        os.open(self.path+'/'+filename, os.O_CREAT)
+        self.files.append(MyFile(self.path+'/'+filename, self, username))
+
 
 class MyFile:
-    def __init__(self, path, parent=None):
+    def __init__(self, path, parent=None, author=None):
         self.path = path
         self.filename = path.split('/')[-1]
         self.parent = parent
         self.permissionsdir = f"{path[:-1*len(self.filename)]}.{self.filename}.json"
-        self.author,self.p1,self.p2=self.get_p()
+        self.author, self.p1, self.p2 = self.get_p()
+        if(author != None):
+            self.author = author
+            self.chmod((self.p1 + self.p2))
 
     def get_p(self):
         if os.path.exists(self.permissionsdir):
@@ -86,7 +97,7 @@ class MyFile:
             with open(self.permissionsdir, 'w') as f:
                 f.write('{"author":"root","p1": "7", "p2": "7"}')
 
-        j=json.load(open(self.permissionsdir))
+        j = json.load(open(self.permissionsdir))
         return j["author"], j["p1"], j["p2"]
 
     def rm(self):
@@ -95,13 +106,13 @@ class MyFile:
             os.remove(self.permissionsdir)
         except:
             pass
-    
-    def chmod(self,p):
-        self.p1=p[0]
-        self.p2=p[1]
+
+    def chmod(self, p):
+        self.p1 = p[0]
+        self.p2 = p[1]
         with open(self.permissionsdir, 'w') as f:
-            dict={"author":self.author,"p1": self.p1, "p2": self.p2}
-            json.dump(dict,f)
+            dict = {"author": self.author, "p1": self.p1, "p2": self.p2}
+            json.dump(dict, f)
 
 
 # d = MyDirectory(os.path.abspath('.'))
