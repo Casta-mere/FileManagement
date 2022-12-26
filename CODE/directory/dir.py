@@ -157,6 +157,12 @@ class MyDirectory:
         return self.files[self.get_filename().index(filename)].cat()
     
 
+    def echo(self,username,content,filename):
+        if(filename in self.filesname):
+            return "File alreadt exists!"
+        self.touch(username,filename)
+        self.files[self.get_filename().index(filename)].echo(content)
+
 class MyFile:
     def __init__(self, path, parent=None, author=None):
         self.path = path
@@ -195,6 +201,11 @@ class MyFile:
     def cat(self):
         with open(self.path.replace('/',r'\\'), 'r',encoding="utf-8") as f:
             return f.read()
+    
+    def echo(self,content):
+        with open(self.path.replace('/',r'\\'), 'w',encoding="utf-8") as f:
+            f.write(content)
+            f.close()
 # d = MyDirectory(os.path.abspath('.'))
 # for i in d.files:
 #     i.get_p()

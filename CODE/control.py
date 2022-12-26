@@ -112,6 +112,25 @@ class Control:
                         print(result)
                 except:
                     print("Only support .txt .md file!")
+            elif cmd[0] == "echo":
+                if cmd[-1].startswith(">"):
+                    try:
+                        symbol = " "
+                        msg = symbol.join(cmd[1:-1])
+                        result = self.d.echo(self.username, msg, cmd[-1][1:])
+
+                        if (result is not None):
+                            print(result)
+                    except:
+                        print("Error!")
+                else:
+                    try:
+                        symbol = " "
+                        temp=cmd[1:]
+                        msg = symbol.join(temp)
+                        print(msg)
+                    except:
+                        print("Error!")
             elif cmd[0] == "logout":
                 self.login()
             elif cmd[0] == "":
