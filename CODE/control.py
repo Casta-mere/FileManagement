@@ -82,6 +82,8 @@ class Control:
                     self.d.touch(self.username,cmd[1])
                 except:
                     print("Invalid file name!")
+            elif cmd[0] == "logout":
+                self.login()
             elif cmd[0] == "":
                 pass
             else:
