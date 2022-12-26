@@ -105,7 +105,13 @@ class Control:
                         print(result)
                 except:
                     print("Error!")
-                    
+            elif cmd[0] == "cat":
+                try:
+                    result = self.d.cat(self.username, cmd[1])
+                    if (result is not None):
+                        print(result)
+                except:
+                    print("Only support .txt .md file!")
             elif cmd[0] == "logout":
                 self.login()
             elif cmd[0] == "":

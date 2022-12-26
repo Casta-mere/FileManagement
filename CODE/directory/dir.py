@@ -137,7 +137,25 @@ class MyDirectory:
             return "File exists"
         self.touch(username,new)
 
+    def cat(self,username,filename):
+        if(filename not in self.filesname):
+            return "No such file or directory"
+        author, p1, p2 = self.files[self.get_filename().index(
+            filename)].get_p()
 
+        p1 = int(p1)
+        p1 = p1 & 4
+        p1 = p1 and (username == author)
+
+        p2 = int(p2)
+        p2 = p2 & 4
+        p2 = p2 and (username != author)
+
+        if (username != "root" and not p1 and not p2):
+            return "Permission denied"
+        
+        return self.files[self.get_filename().index(filename)].cat()
+    
 
 class MyFile:
     def __init__(self, path, parent=None, author=None):
@@ -174,7 +192,9 @@ class MyFile:
             dict = {"author": self.author, "p1": self.p1, "p2": self.p2}
             json.dump(dict, f)
 
-
+    def cat(self):
+        with open(self.path.replace('/',r'\\'), 'r',encoding="utf-8") as f:
+            return f.read()
 # d = MyDirectory(os.path.abspath('.'))
 # for i in d.files:
 #     i.get_p()
