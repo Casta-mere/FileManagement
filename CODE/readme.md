@@ -8,16 +8,17 @@
 | basic           | clear    | &check; |
 | basic           | login    | &check; |
 | basic           | logout   | &check; |
+| basic           | pw       | &check; |
 | dir manipulate  | mkdir    | &check; |
 | dir manipulate  | rmdir    | &check; |
 | file manipulate | touch    | &check; |
 | file manipulate | rm       | &check; |
 | file manipulate | mv       | &check; |
 | file manipulate | cp       | &check; |
-| file manipulate | cat      | &cross; |
+| file manipulate | cat      | &check; |
 | file manipulate | vi       | &cross; |
-| file manipulate | echo     | &cross; |
-| file manipulate | find     | &cross; |
+| file manipulate | echo     | &check; |
+| file manipulate | find     | &check; |
 | file manipulate | chmod    | &check; |
 
 

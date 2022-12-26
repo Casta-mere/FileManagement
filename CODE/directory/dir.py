@@ -171,6 +171,27 @@ class MyDirectory:
                 return i.find(filename)
         return None
 
+    def vi(self,username,filename):
+        author, p1, p2 = self.files[self.get_filename().index(
+            filename)].get_p()
+
+        p1 = int(p1)
+        p1 = p1 & 6
+        p1 = p1 and (username == author)
+
+        p2 = int(p2)
+        p2 = p2 & 6
+        p2 = p2 and (username != author)
+
+        if(username != "root" and not p1 and not p2):
+            return "Permission denied"
+
+
+        if(filename not in self.filesname):
+            return "No such file or directory"
+        self.files[self.get_filename().index(filename)].vi()
+
+
 class MyFile:
     def __init__(self, path, parent=None, author=None):
         self.path = path
@@ -214,6 +235,20 @@ class MyFile:
         with open(self.path.replace('/',r'\\'), 'w',encoding="utf-8") as f:
             f.write(content)
             f.close()
+
+    def vi(self):
+        os.system("cls")
+        print(self.cat())
+        while(True):
+            content=input()
+            if(content==":wq"):
+                break
+            self.echo(self.cat()+content+'\n')
+        
+        
 # d = MyDirectory(os.path.abspath('.'))
 # for i in d.files:
 #     i.get_p()
+
+if __name__ == '__main__':
+    pass

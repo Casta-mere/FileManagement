@@ -3,6 +3,7 @@ from directory import dir
 from users import users
 
 
+os.system('cls')
 class Control:
     def __init__(self):
         self.d = dir.MyDirectory(os.path.abspath('.'))
@@ -112,6 +113,11 @@ class Control:
                         print(result)
                 except:
                     print("Only support .txt .md file!")
+            elif cmd[0] == "vi":
+                try:
+                    result = self.d.vi(self.username, cmd[1])
+                except:
+                    print("Only support .txt .md file!")
             elif cmd[0] == "echo":
                 if cmd[-1].startswith(">"):
                     try:
@@ -138,6 +144,10 @@ class Control:
                         print(result)
                 except:
                     print("Error!")
+            elif cmd[0] == "pw":   
+                pw=input(f"Enter new password for {self.username}")
+                print(self.u.change_password(self.username,pw))
+            
             elif cmd[0] == "logout":
                 self.login()
             elif cmd[0] == "":
@@ -166,5 +176,5 @@ class Control:
         self.d.tree()
 
 
-os.system('cls')
-c = Control()
+if __name__ == '__main__':
+    pass

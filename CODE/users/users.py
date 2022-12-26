@@ -1,10 +1,13 @@
 import json
 file = f"CODE/users/users.json"
-
+file2 = f"users/users.json"
 class users:
     def __init__(self):
-        self.j = json.load(open(file))
+        try:
+            self.j = json.load(open(file))
 
+        except:
+            self.j = json.load(open(file2))
 
     def validate(self, username, password):
         # 0: user not exist
@@ -30,7 +33,14 @@ class users:
 
     def writeback(self):
         json.dump(self.j, open(file, "w"))
+    
+    def change_password(self, username, password):
+        if self.validate(username, password) == 2:
+            self.j[username] = input("New password: ")
+            self.writeback()
+            return "Success"
+        else:
+            return "Wrong password"
 
-
-if __name__ == "__main__":
-    u = users()
+if __name__ == '__main__':
+    pass
