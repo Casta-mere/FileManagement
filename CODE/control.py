@@ -70,6 +70,13 @@ class Control:
                     self.d.rmdir(cmd[1])
                 except:
                     print(f"Dir {cmd[1]} not exist")
+            elif cmd[0] == "chmod":
+                try:
+                    temp=self.d.chmod(self.username, cmd[1], cmd[2])
+                    if temp is not None:
+                        print(temp)
+                except:
+                    print("Command not complete")
             elif cmd[0] == "":
                 pass
             else:
