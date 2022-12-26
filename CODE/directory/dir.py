@@ -83,11 +83,13 @@ class MyDirectory:
             return "No such file or directory"
         author, p1, p2 = self.files[self.get_filename().index(
             filename)].get_p()
+
         p1 = int(p1)
-        p1 = p1 & 2
+        p1 = p1 & 2 # using xor to get write permission
         p1 = p1 and (username == author)
+
         p2 = int(p2)
-        p2 = p2 & 2
+        p2 = p2 & 2 # using xor to get write permission
         p2 = p2 and (username != author)
 
         if(username != "root" and not p1 and not p2):
@@ -96,6 +98,38 @@ class MyDirectory:
         self.files[self.get_filename().index(filename)].rm()
         self.files.remove(self.files[self.get_filename().index(filename)])
         self.filesname.remove(filename)
+
+    def mv(self,username,old,new):
+        if(old not in self.filesname):
+            return "No such file or directory"
+        if(new in self.filesname):
+            return "File exists"
+        author, p1, p2 = self.files[self.get_filename().index(
+            old)].get_p()
+
+        p1 = int(p1)
+        p1 = p1 & 2
+        p1 = p1 and (username == author)
+
+        p2 = int(p2)
+        p2 = p2 & 2
+        p2 = p2 and (username != author)
+
+        if(username != "root" and not p1 and not p2):
+            return "Permission denied"
+
+        oldpath=self.path+'/'+old
+        newpath=self.path+'/'+new
+        oldpermissionpath=f"{self.path}/.{old}.json"
+        newpermissionpath=f"{self.path}/.{new}.json"
+
+        self.files[self.get_filename().index(old)].path = newpath
+        self.files[self.get_filename().index(old)].filename = new
+        self.files[self.get_filename().index(old)].permissionsdir = newpermissionpath
+        self.filesname[self.get_filename().index(old)] = new
+        os.rename(oldpath,newpath)
+        os.rename(oldpermissionpath,newpermissionpath)
+
 
 
 class MyFile:
