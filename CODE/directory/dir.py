@@ -37,5 +37,17 @@ class MyDirectory:
         for i in self.subdir:
             i.tree(level+1)
 
+    def mkdir(self,dirname):
+        os.mkdir(self.path+'/'+dirname)
+        self.subdirname.append(dirname)
+        self.subdir.append(MyDirectory(self.path+'/'+dirname,self))
+    
+    def rmdir(self,dirname):
+        self.subdir.remove(self.subdir[self.get_subdirname().index(dirname)])
+        self.subdirname.remove(dirname)
+        os.rmdir(self.path+'/'+dirname)
+
+
+
     def get_pathname(self):
         return self.pathname
