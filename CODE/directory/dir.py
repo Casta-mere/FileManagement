@@ -85,11 +85,11 @@ class MyDirectory:
             filename)].get_p()
 
         p1 = int(p1)
-        p1 = p1 & 2 # using xor to get write permission
+        p1 = p1 & 2  # using xor to get write permission
         p1 = p1 and (username == author)
 
         p2 = int(p2)
-        p2 = p2 & 2 # using xor to get write permission
+        p2 = p2 & 2  # using xor to get write permission
         p2 = p2 and (username != author)
 
         if(username != "root" and not p1 and not p2):
@@ -99,7 +99,7 @@ class MyDirectory:
         self.files.remove(self.files[self.get_filename().index(filename)])
         self.filesname.remove(filename)
 
-    def mv(self,username,old,new):
+    def mv(self, username, old, new):
         if(old not in self.filesname):
             return "No such file or directory"
         if(new in self.filesname):
@@ -118,26 +118,27 @@ class MyDirectory:
         if(username != "root" and not p1 and not p2):
             return "Permission denied"
 
-        oldpath=self.path+'/'+old
-        newpath=self.path+'/'+new
-        oldpermissionpath=f"{self.path}/.{old}.json"
-        newpermissionpath=f"{self.path}/.{new}.json"
+        oldpath = self.path+'/'+old
+        newpath = self.path+'/'+new
+        oldpermissionpath = f"{self.path}/.{old}.json"
+        newpermissionpath = f"{self.path}/.{new}.json"
 
         self.files[self.get_filename().index(old)].path = newpath
         self.files[self.get_filename().index(old)].filename = new
-        self.files[self.get_filename().index(old)].permissionsdir = newpermissionpath
+        self.files[self.get_filename().index(
+            old)].permissionsdir = newpermissionpath
         self.filesname[self.get_filename().index(old)] = new
-        os.rename(oldpath,newpath)
-        os.rename(oldpermissionpath,newpermissionpath)
+        os.rename(oldpath, newpath)
+        os.rename(oldpermissionpath, newpermissionpath)
 
-    def cp(self,username,old,new):
+    def cp(self, username, old, new):
         if(old not in self.filesname):
             return "No such file or directory"
         if(new in self.filesname):
             return "File exists"
-        self.touch(username,new)
+        self.touch(username, new)
 
-    def cat(self,username,filename):
+    def cat(self, username, filename):
         if(filename not in self.filesname):
             return "No such file or directory"
         author, p1, p2 = self.files[self.get_filename().index(
@@ -153,17 +154,16 @@ class MyDirectory:
 
         if (username != "root" and not p1 and not p2):
             return "Permission denied"
-        
-        return self.files[self.get_filename().index(filename)].cat()
-    
 
-    def echo(self,username,content,filename):
+        return self.files[self.get_filename().index(filename)].cat()
+
+    def echo(self, username, content, filename):
         if(filename in self.filesname):
             return "File alreadt exists!"
-        self.touch(username,filename)
+        self.touch(username, filename)
         self.files[self.get_filename().index(filename)].echo(content)
 
-    def find(self,filename):
+    def find(self, filename):
         if(filename in self.filesname):
             return self.pathname+'/'+filename
         for i in self.subdir:
@@ -171,9 +171,12 @@ class MyDirectory:
                 return i.find(filename)
         return None
 
-    def vi(self,username,filename):
-        author, p1, p2 = self.files[self.get_filename().index(
+    def vi(self, username, filename):
+        author, p1, p2, state = self.files[self.get_filename().index(
             filename)].get_p()
+        if state=="2":
+            return "File is being edited by another user"
+        
 
         p1 = int(p1)
         p1 = p1 & 6
@@ -186,7 +189,6 @@ class MyDirectory:
         if(username != "root" and not p1 and not p2):
             return "Permission denied"
 
-
         if(filename not in self.filesname):
             return "No such file or directory"
         self.files[self.get_filename().index(filename)].vi()
@@ -198,7 +200,10 @@ class MyFile:
         self.filename = path.split('/')[-1]
         self.parent = parent
         self.permissionsdir = f"{path[:-1*len(self.filename)]}.{self.filename}.json"
-        self.author, self.p1, self.p2 = self.get_p()
+        self.author, self.p1, self.p2, self.state = self.get_p()
+        # 0 - available
+        # 1 - reading
+        # 2 - writing
         if(author != None):
             self.author = author
             self.chmod((self.p1 + self.p2))
@@ -208,10 +213,10 @@ class MyFile:
             pass
         else:
             with open(self.permissionsdir, 'w') as f:
-                f.write('{"author":"root","p1": "7", "p2": "7"}')
+                f.write('{"author":"root","p1": "7", "p2": "7","state": "0"}')
 
         j = json.load(open(self.permissionsdir))
-        return j["author"], j["p1"], j["p2"]
+        return j["author"], j["p1"], j["p2"], j["state"]
 
     def rm(self):
         try:
@@ -220,32 +225,35 @@ class MyFile:
         except:
             pass
 
-    def chmod(self, p):
+    def chmod(self, p, state):
         self.p1 = p[0]
         self.p2 = p[1]
         with open(self.permissionsdir, 'w') as f:
-            dict = {"author": self.author, "p1": self.p1, "p2": self.p2}
+            dict = {"author": self.author, "p1": self.p1,
+                    "p2": self.p2, "state": state}
             json.dump(dict, f)
 
     def cat(self):
-        with open(self.path.replace('/',r'\\'), 'r',encoding="utf-8") as f:
+        with open(self.path.replace('/', r'\\'), 'r', encoding="utf-8") as f:
             return f.read()
-    
-    def echo(self,content):
-        with open(self.path.replace('/',r'\\'), 'w',encoding="utf-8") as f:
+
+    def echo(self, content):
+        with open(self.path.replace('/', r'\\'), 'w', encoding="utf-8") as f:
             f.write(content)
             f.close()
 
     def vi(self):
+        self.chmod((self.p1 + self.p2), "2")
         os.system("cls")
         print(self.cat())
         while(True):
-            content=input()
-            if(content==":wq"):
+            content = input()
+            if(content == ":wq"):
                 break
             self.echo(self.cat()+content+'\n')
-        
-        
+        self.chmod((self.p1 + self.p2), "0")
+
+
 # d = MyDirectory(os.path.abspath('.'))
 # for i in d.files:
 #     i.get_p()

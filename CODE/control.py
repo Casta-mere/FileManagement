@@ -116,6 +116,8 @@ class Control:
             elif cmd[0] == "vi":
                 try:
                     result = self.d.vi(self.username, cmd[1])
+                    if (result is not None):
+                        print(result)
                 except:
                     print("Only support .txt .md file!")
             elif cmd[0] == "echo":
@@ -145,7 +147,7 @@ class Control:
                 except:
                     print("Error!")
             elif cmd[0] == "pw":   
-                pw=input(f"Enter new password for {self.username}")
+                pw=input(f"Enter old password for {self.username}")
                 print(self.u.change_password(self.username,pw))
             
             elif cmd[0] == "logout":
