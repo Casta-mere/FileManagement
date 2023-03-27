@@ -1,7 +1,7 @@
 import os
 import json
+# Modify the rootpath to your own path
 rootpath = r"D:\Onedrive\OneDrive - txsxcy\Project\FileManagement"
-
 
 class MyDirectory:
     def __init__(self, path, parent=None):
@@ -69,7 +69,7 @@ class MyDirectory:
             return "No such file or directory"
         if(username != "root" and username != self.files[self.get_filename().index(filename)].author):
             return "Permission denied"
-        self.files[self.get_filename().index(filename)].chmod(p)
+        self.files[self.get_filename().index(filename)].chmod(p,0)
 
     def touch(self, username, filename):
         if(filename in self.filesname):
@@ -79,9 +79,12 @@ class MyDirectory:
         self.files.append(MyFile(self.path+'/'+filename, self, username))
 
     def rm(self, username, filename):
+        # Determine if the file exists
         if(filename not in self.filesname):
             return "No such file or directory"
-        author, p1, p2 = self.files[self.get_filename().index(
+
+        # Determine if the user has permission to delete the file
+        author, p1, p2, state = self.files[self.get_filename().index(
             filename)].get_p()
 
         p1 = int(p1)
@@ -95,6 +98,7 @@ class MyDirectory:
         if(username != "root" and not p1 and not p2):
             return "Permission denied"
 
+        # Delete the file
         self.files[self.get_filename().index(filename)].rm()
         self.files.remove(self.files[self.get_filename().index(filename)])
         self.filesname.remove(filename)
@@ -104,7 +108,7 @@ class MyDirectory:
             return "No such file or directory"
         if(new in self.filesname):
             return "File exists"
-        author, p1, p2 = self.files[self.get_filename().index(
+        author, p1, p2, state = self.files[self.get_filename().index(
             old)].get_p()
 
         p1 = int(p1)
@@ -141,7 +145,7 @@ class MyDirectory:
     def cat(self, username, filename):
         if(filename not in self.filesname):
             return "No such file or directory"
-        author, p1, p2 = self.files[self.get_filename().index(
+        author, p1, p2 ,state= self.files[self.get_filename().index(
             filename)].get_p()
 
         p1 = int(p1)
@@ -172,12 +176,13 @@ class MyDirectory:
         return None
 
     def vi(self, username, filename):
+        # Determine if the file is being edited by another user
         author, p1, p2, state = self.files[self.get_filename().index(
             filename)].get_p()
-        if state=="2":
+        if state == "2":
             return "File is being edited by another user"
-        
 
+        # Determine if the user has permission to edit the file
         p1 = int(p1)
         p1 = p1 & 6
         p1 = p1 and (username == author)
@@ -206,7 +211,7 @@ class MyFile:
         # 2 - writing
         if(author != None):
             self.author = author
-            self.chmod((self.p1 + self.p2))
+            self.chmod((self.p1 + self.p2), self.state)
 
     def get_p(self):
         if os.path.exists(self.permissionsdir):
